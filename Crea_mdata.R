@@ -3,11 +3,9 @@
 # 15 novembre 2015 e 20 dicembre in Polonia
 rm(list = ls())
 
-# setwd('F:/AAA_DATA/PROGETTI/2015/01_MARS/AAA_ELABORAZ_NOV2015/Dati')
-# setwd('/Volumes/NO NAME/01_MARS/ANALISI_Novembre2015')
-setwd("~/Documenti/03-PUBBetCV/InFieri/Puletti/CAIviaMARS3")
-
-indata <- read.csv('IFR_Piemonte_2.csv')[,-c(5,15:16,24:26)]#tolte info accessorie
+require(RCurl)
+x <- getURL("https://raw.githubusercontent.com/NuoroForestrySchool/CAIviaMARS/master/IFR_Piemonte_2.csv")
+indata <- read.csv(text = x)[,-c(5,15:16,24:26)]#tolte info accessorie
 head(indata)
 # Calcolo CAI = StandingVolume * pV
 #          pV = {[vol(DBH2, (H+.2)) / vol(DBH, H)] - 1  )
