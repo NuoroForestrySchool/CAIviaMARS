@@ -3,9 +3,21 @@
 # 15 novembre 2015 e 20 dicembre in Polonia
 rm(list = ls())
 
-require(RCurl)
-x <- getURL("https://raw.githubusercontent.com/NuoroForestrySchool/CAIviaMARS/master/IFR_Piemonte_2.csv")
-indata <- read.csv(text = x)[,-c(5,15:16,24:26)]#tolte info accessorie
+# Opzione utilizzabile sei il CSV no deve essere criptato, non è necessario creare file!
+# require(RCurl)
+# x <- getURL("https://raw.githubusercontent.com/NuoroForestrySchool/CAIviaMARS/master/IFR_Piemonte_2.csv")
+# indata <- read.csv(text = x)[,-c(5,15:16,24:26)]#tolte info accessorie
+
+# Se invece deve essere criptato
+tf <- tempfile()
+system2("wget", args=c(paste("--output-document",tf), url))
+td <- dirname(tf)
+psw <- readline("Password: ")
+system2("unzip", args=c(paste("-d",td), paste("-P",psw), tf, "inventario.csv"))
+rm(psw)
+unlink(tf)
+indata <- read.csv(paste(td,"inventario.csv",sep="/"))[,-c(5,15:16,24:26)]#tolte info accessorie
+
 head(indata)
 # Calcolo CAI = StandingVolume * pV
 #          pV = {[vol(DBH2, (H+.2)) / vol(DBH, H)] - 1  )
