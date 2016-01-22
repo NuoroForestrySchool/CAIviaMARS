@@ -6,18 +6,17 @@
 #     CAIp = f(Age, f_DBH(Age, ForCat), f_Height(f_DBH, ForCat), f_SV(Age, f_DBH, f_Height, ForCat))
 # ** level 2 - only SV estimate is split on the two quartile levels, others are central fits
 
-
 rm(list = ls())
+srcf <- "Crea_mdata.R"
+ghrepo <- "NuoroForestrySchool/CAIviaMARS/master/"
+sf <- ifelse(file.exists(srcf), srcf, 
+             paste(sep="","https://raw.githubusercontent.com/",
+                   ghrepo,srcf))
+source(sf)
 
-# setwd('F:/AAA_DATA/PROGETTI/2015/01_MARS/AAA_ELABORAZ_NOV2015/Dati')
-# setwd('/Volumes/NO NAME/01_MARS/ANALISI_Novembre2015')
-setwd("~/Documenti/03-PUBBetCV/InFieri/Puletti/CAIviaMARS3")
-
-library("latticeExtra")
 library(earth)
 library(dplyr)
 library(latticeExtra)
-source("Crea_mdata.R")
 
 # BUILDING MODELS
 # examining Standing_Volume distributions => f_SV

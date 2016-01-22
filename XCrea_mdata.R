@@ -1,24 +1,32 @@
 # 21 gennaio 2016
 # 5 gennaio 2015, a partira da:
 # 15 novembre 2015 e 20 dicembre in Polonia
-rm(list = ls())
 
-# Opzione utilizzabile sei il CSV no deve essere criptato, non è necessario creare file!
+# Opzione utilizzabile se non è necessario criptare il CSV. Non è necessario creare file!
 # require(RCurl)
 # x <- getURL("https://raw.githubusercontent.com/NuoroForestrySchool/CAIviaMARS/master/IFR_Piemonte_2.csv")
 # indata <- read.csv(text = x)[,-c(5,15:16,24:26)]#tolte info accessorie
 
 # Se invece deve essere criptato
 tf <- tempfile()
-system2("wget", args=c(paste("--output-document",tf), url))
 td <- dirname(tf)
+# se il CSV non è nella WorkingDir
+csvzipfile <- "inventario.csv.zip"
+if(!file.exists(csvzipfile)) {
+  # recuperalo da GitHub
+  d.url <- "https://raw.githubusercontent.com/NuoroForestrySchool/CAIviaMARS/master/inventario.csv.zip"
+  system2("wget", args=c(paste("--output-document",tf), d.url))
+  csvzipfile <- tf
+}
 psw <- readline("Password: ")
-system2("unzip", args=c(paste("-d",td), paste("-P",psw), tf, "inventario.csv"))
+system2("unzip", args=c(paste("-o -d",td), paste("-P",psw), csvzipfile, "inventario.csv"))
 rm(psw)
-unlink(tf)
-indata <- read.csv(paste(td,"inventario.csv",sep="/"))[,-c(5,15:16,24:26)]#tolte info accessorie
-
+if (file.exists(tf)) file.remove(tf)
+indata.file <- paste(td,"inventario.csv",sep="/")
+indata <- read.csv(indata.file)[,-c(5,15:16,24:26)]#tolte info accessorie
+file.remove(indata.file)
 head(indata)
+
 # Calcolo CAI = StandingVolume * pV
 #          pV = {[vol(DBH2, (H+.2)) / vol(DBH, H)] - 1  )
 indata$vol_i_1a <- pi*indata$sH*.5*(indata$sDBH/200)^2
