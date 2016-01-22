@@ -20,11 +20,11 @@ if(!file.exists(csvzipfile)) {
 }
 psw <- readline("Password: ")
 system2("unzip", args=c(paste("-o -d",td), paste("-P",psw), csvzipfile, "inventario.csv"))
-rm(psw)
 if (file.exists(tf)) file.remove(tf)
 indata.file <- paste(td,"inventario.csv",sep="/")
 indata <- read.csv(indata.file)[,-c(5,15:16,24:26)]#tolte info accessorie
 file.remove(indata.file)
+rm(psw,tf,td,indata.file)
 head(indata)
 
 # Calcolo CAI = StandingVolume * pV

@@ -1,15 +1,16 @@
 # 21 gennaio 2016
 # 5 gennaio 2015, a partira da:
 # 15 novembre 2015 e 20 dicembre in Polonia
-rm(list = ls())
 
-# setwd('F:/AAA_DATA/PROGETTI/2015/01_MARS/AAA_ELABORAZ_NOV2015/Dati')
-# setwd('/Volumes/NO NAME/01_MARS/ANALISI_Novembre2015')
-setwd("~/Documenti/03-PUBBetCV/InFieri/Puletti/CAIviaMARS3")
+rm(list = ls())
+srcf <- "Crea_mdata.R"
+ghrepo <- "NuoroForestrySchool/CAIviaMARS/master/"
+sf <- ifelse(file.exists(srcf), srcf, 
+             paste(sep="","https://raw.githubusercontent.com/",
+                   ghrepo,srcf))
+source(sf)
 
 library("latticeExtra")
-
-source("Crea_mdata.R")
 
 bpwm <- function(Measure, Group, ..., ord=meds){
   #produce BoxPlot, con medie "*", ordinate per mediana crescente
